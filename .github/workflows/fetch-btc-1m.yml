@@ -1,0 +1,48 @@
+name: fetch-btc-1m
+on:
+  workflow_dispatch:
+    inputs:
+      start:
+        description: "Start date YYYY-MM-DD"
+        required: true
+        default: "2026-10-25"
+      end:
+        description: "End date YYYY-MM-DD inclusive"
+        required: true
+        default: "2026-10-31"
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download daily 1m klines and metrics
+        env:
+          START: ${{ inputs.start }}
+          END: ${{ inputs.end }}
+        run: |
+          set -u
+          mkdir -p data/btc_1m/spot data/btc_1m/mark data/btc_1m/metrics
+          d="$START"
+          while [[ "$d" <= "$END" ]]; do
+            curl -fsSL -o /tmp/spot.zip "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-${d}.zip" \
+              && unzip -qo /tmp/spot.zip -d data/btc_1m/spot/ || echo "no spot ${d}"
+            curl -fsSL -o /tmp/mark.zip "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-${d}.zip" \
+              && unzip -qo /tmp/mark.zip -d data/btc_1m/mark/ || echo "no mark ${d}"
+            curl -fsSL -o /tmp/metrics.zip "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-${d}.zip" \
+              && unzip -qo /tmp/metrics.zip -d data/btc_1m/metrics/ || echo "no metrics ${d}"
+            d=$(date -I -d "$d + 1 day" || date -v+1d -I)
+          done
+          ls -la data/btc_1m/spot data/btc_1m/mark data/btc_1m/metrics
+          find data/btc_1m -type f | sort
+      - name: Commit and push
+        run: |
+          git config user.name "arena-agent"
+          git config user.email "arena-agent@users.noreply.github.com"
+          git add data/btc_1m || true
+          git diff --cached --quiet || git commit -m "data: BTCUSDT 1m klines/metrics ${START}..${END} via Binance Vision"
+          git push origin HEAD:arena/280dc46a-neuroprediction
+        env:
+          START: ${{ inputs.start }}
+          END: ${{ inputs.end }}
