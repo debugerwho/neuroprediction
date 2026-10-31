@@ -24,8 +24,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Download daily 1m klines and metrics
         env:
-          START: ${{ inputs.start }}
-          END: ${{ inputs.end }}
+          START: ${{ inputs.start || '2026-10-25' }}
+          END: ${{ inputs.end || '2026-10-31' }}
         run: |
           set +e
           mkdir -p data/btc_1m/spot data/btc_1m/mark data/btc_1m/metrics
