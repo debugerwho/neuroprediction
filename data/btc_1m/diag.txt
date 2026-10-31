@@ -1,0 +1,3 @@
+404 size=320 https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-.zip
+404 size=335 https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-.zip
+404 size=349 https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-.zip
