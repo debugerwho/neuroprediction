@@ -30,7 +30,7 @@ jobs:
           set -u
           mkdir -p data/btc_1m/spot data/btc_1m/mark data/btc_1m/metrics
           d="$START"
-          while [[ "$d" <= "$END" ]]; do
+          while [[ "$d" < "$END" || "$d" == "$END" ]]; do
             curl -fsSL -o /tmp/spot.zip "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-${d}.zip" \
               && unzip -qo /tmp/spot.zip -d data/btc_1m/spot/ || echo "no spot ${d}"
             curl -fsSL -o /tmp/mark.zip "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-${d}.zip" \
