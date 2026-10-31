@@ -27,20 +27,28 @@ jobs:
           START: ${{ inputs.start }}
           END: ${{ inputs.end }}
         run: |
-          set -u
+          set +e
           mkdir -p data/btc_1m/spot data/btc_1m/mark data/btc_1m/metrics
+          DIAG=data/btc_1m/diag.txt
+          : > "$DIAG"
+          fetch() {
+            url="$1"; dest="$2"; outdir="$3"
+            code=$(curl -sS -L --connect-timeout 15 -o "$dest" -w '%{http_code}' "$url" 2>>"$DIAG")
+            size=$(stat -c%s "$dest" 2>/dev/null || echo 0)
+            echo "$code size=$size $url" >> "$DIAG"
+            if [ "$code" = "200" ] && [ "$size" -gt 1000 ]; then
+              unzip -qo "$dest" -d "$outdir" >>"$DIAG" 2>&1
+            fi
+          }
           d="$START"
           while [[ "$d" < "$END" || "$d" == "$END" ]]; do
-            curl -fsSL -o /tmp/spot.zip "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-${d}.zip" \
-              && unzip -qo /tmp/spot.zip -d data/btc_1m/spot/ || echo "no spot ${d}"
-            curl -fsSL -o /tmp/mark.zip "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-${d}.zip" \
-              && unzip -qo /tmp/mark.zip -d data/btc_1m/mark/ || echo "no mark ${d}"
-            curl -fsSL -o /tmp/metrics.zip "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-${d}.zip" \
-              && unzip -qo /tmp/metrics.zip -d data/btc_1m/metrics/ || echo "no metrics ${d}"
-            d=$(date -I -d "$d + 1 day" || date -v+1d -I)
+            fetch "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-${d}.zip" /tmp/spot.zip data/btc_1m/spot/
+            fetch "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-${d}.zip" /tmp/mark.zip data/btc_1m/mark/
+            fetch "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-${d}.zip" /tmp/metrics.zip data/btc_1m/metrics/
+            d=$(date -I -d "$d + 1 day")
           done
-          ls -la data/btc_1m/spot data/btc_1m/mark data/btc_1m/metrics
-          find data/btc_1m -type f | sort
+          find data/btc_1m -type f -size +1k | sort >> "$DIAG"
+          exit 0
       - name: Commit and push
         run: |
           git config user.name "arena-agent"
