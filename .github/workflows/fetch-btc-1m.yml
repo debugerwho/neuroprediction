@@ -1,5 +1,10 @@
 name: fetch-btc-1m
 on:
+  push:
+    branches: ["arena/280dc46a-neuroprediction"]
+    paths:
+      - ".github/workflows/fetch-btc-1m.yml"
+      - "data/btc_1m/trigger.txt"
   workflow_dispatch:
     inputs:
       start:
