@@ -1,0 +1,38 @@
+200 size=66218 https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-25.zip
+200 size=32378 https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2026-10-25.zip
+200 size=11393 https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2026-10-25.zip
+200 size=70303 https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-26.zip
+200 size=34787 https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2026-10-26.zip
+200 size=11497 https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2026-10-26.zip
+200 size=69682 https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-27.zip
+200 size=34405 https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2026-10-27.zip
+200 size=11441 https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2026-10-27.zip
+200 size=69107 https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-28.zip
+404 size=365 https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2026-10-28.zip
+200 size=11320 https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2026-10-28.zip
+200 size=71228 https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-29.zip
+404 size=365 https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2026-10-29.zip
+200 size=11808 https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2026-10-29.zip
+200 size=71899 https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-30.zip
+200 size=36271 https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2026-10-30.zip
+200 size=11596 https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2026-10-30.zip
+404 size=330 https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-2026-10-31.zip
+404 size=365 https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-2026-10-31.zip
+404 size=359 https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-2026-10-31.zip
+data/btc_1m/diag.txt
+data/btc_1m/mark/BTCUSDT-1m-2026-10-25.csv
+data/btc_1m/mark/BTCUSDT-1m-2026-10-26.csv
+data/btc_1m/mark/BTCUSDT-1m-2026-10-27.csv
+data/btc_1m/mark/BTCUSDT-1m-2026-10-30.csv
+data/btc_1m/metrics/BTCUSDT-metrics-2026-10-25.csv
+data/btc_1m/metrics/BTCUSDT-metrics-2026-10-26.csv
+data/btc_1m/metrics/BTCUSDT-metrics-2026-10-27.csv
+data/btc_1m/metrics/BTCUSDT-metrics-2026-10-28.csv
+data/btc_1m/metrics/BTCUSDT-metrics-2026-10-29.csv
+data/btc_1m/metrics/BTCUSDT-metrics-2026-10-30.csv
+data/btc_1m/spot/BTCUSDT-1m-2026-10-25.csv
+data/btc_1m/spot/BTCUSDT-1m-2026-10-26.csv
+data/btc_1m/spot/BTCUSDT-1m-2026-10-27.csv
+data/btc_1m/spot/BTCUSDT-1m-2026-10-28.csv
+data/btc_1m/spot/BTCUSDT-1m-2026-10-29.csv
+data/btc_1m/spot/BTCUSDT-1m-2026-10-30.csv

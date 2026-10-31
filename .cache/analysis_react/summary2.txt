@@ -1,0 +1,78 @@
+
+##### window=1 день: candidates=302 touched=302 deduped_touches=117
+touch@60m by dist:
+                            mean  size
+db                    side            
+(0.0, 100.0]          DOWN  0.80    20
+                      UP    0.80    35
+(100.0, 200.0]        DOWN  0.63    19
+                      UP    0.50    20
+(200.0, 400.0]        DOWN  0.12    34
+                      UP    0.25    56
+(400.0, 800.0]        DOWN  0.05    76
+                      UP    0.03    38
+(800.0, 1000000000.0] DOWN  0.00     2
+                      UP    0.00     2
+post-touch medians by side:
+      post15  post30  post60
+side                        
+DOWN    -3.9    -4.8    -4.4
+UP       0.8    -2.6    -3.2
+reversion-to-origin within 60m after touch: 0.40 (UP 0.34 / DOWN 0.47)
+by day (post30 median / n):
+            post30   n
+day                   
+2026-10-26    -2.7  21
+2026-10-27   -11.9  35
+2026-10-28    -6.1  29
+2026-10-29    15.2  32
+median touch-bar range: 9bp
+
+##### window=7 день: candidates=304 touched=304 deduped_touches=121
+touch@60m by dist:
+                            mean  size
+db                    side            
+(0.0, 100.0]          DOWN  0.74    34
+                      UP    0.89    53
+(100.0, 200.0]        DOWN  0.58    24
+                      UP    0.40    20
+(200.0, 400.0]        DOWN  0.22    36
+                      UP    0.32    40
+(400.0, 800.0]        DOWN  0.00    50
+                      UP    0.14    37
+(800.0, 1000000000.0] DOWN  0.00     8
+                      UP    0.00     2
+post-touch medians by side:
+      post15  post30  post60
+side                        
+DOWN    -0.3    -1.9     6.1
+UP      -1.6    -5.7    -6.9
+reversion-to-origin within 60m after touch: 0.44 (UP 0.41 / DOWN 0.48)
+by day (post30 median / n):
+            post30   n
+day                   
+2026-10-26    13.5  18
+2026-10-27   -11.1  30
+2026-10-28    -5.7  35
+2026-10-29    -1.3  38
+median touch-bar range: 8bp
+
+##### regime (pre60) × side → post30 (through-level bp)
+             median  mean  size
+regime side                    
+dn60   DOWN    -1.1  15.3    22
+       UP      -1.8   1.3    24
+flat   DOWN   -14.5  -5.8    16
+       UP      -2.6  -5.8    19
+up60   DOWN     1.8   3.7    17
+       UP      -6.2  -5.5    19
+
+##### regime × side → reversion-to-origin
+                 mean  size
+regime side                
+dn60   DOWN  0.545455    22
+       UP    0.083333    24
+flat   DOWN       0.5    16
+       UP    0.368421    19
+up60   DOWN  0.352941    17
+       UP    0.631579    19

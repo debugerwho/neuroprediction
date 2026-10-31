@@ -1,0 +1,104 @@
+=== SAMPLE ===
+snapshots=154 span 2026-10-26 06:29:57.628000+00:00 -> 2026-10-29 22:13:27.465000+00:00
+touch rate 60m: 89/n; 240m touches=90 deduped
+
+=== A. P(touch level | distance), window=1d ===
+                             mean  size
+db                    side             
+(0.0, 100.0]          DOWN  0.800    20
+                      UP    0.800    35
+(100.0, 200.0]        DOWN  0.632    19
+                      UP    0.500    20
+(200.0, 400.0]        DOWN  0.118    34
+                      UP    0.250    56
+(400.0, 800.0]        DOWN  0.053    76
+                      UP    0.026    38
+(800.0, 1000000000.0] DOWN  0.000     2
+                      UP    0.000     2
+
+=== B. Post-touch behaviour (deduped; positive = move THROUGH the level) ===
+all medians: {'post5': 1.8, 'post15': 1.9, 'post30': -2.6, 'post60': -4.1, 'mfe': 15.1, 'mae': 15.7}
+UP: n=50 median post5/15/30/60=3/2/-3/-11bp  MFE=16 MAE=14 reject15=0.40
+DOWN: n=40 median post5/15/30/60=1/1/-1/0bp  MFE=14 MAE=19 reject15=0.50
+
+=== C. By strength of touched level (loc) ===
+                    post15             post30                mfe                mae             rejected               
+                    median   mean size median   mean size median   mean size median   mean size   median      mean size
+strength                                                                                                               
+(1.0, 2.0]            4.79  10.01   30  -1.45  12.10   30  14.47  32.73   30  12.04  16.65   30      0.0  0.366667   30
+(2.0, 4.0]            0.80   1.39   15 -19.60  -8.67   15  12.11  25.27   15  28.29  29.12   15      0.0       0.4   15
+(4.0, 8.0]           -5.36  -3.80   22  -8.02  -3.54   22  11.14  17.51   22  21.96  26.09   22      1.0  0.681818   22
+(8.0, 1000000000.0]   9.20   8.80   23   8.90   8.54   23  24.90  28.10   23  13.11  16.55   23      0.0  0.347826   23
+
+=== D. By approach speed (pre15 return toward the level, bp) ===
+                     post15            post30             rejected                tt_min            
+                     median  mean size median   mean size   median      mean size median   mean size
+app_bin                                                                                             
+(-1000000000.0, 0.0]   2.46  2.23   45  -1.15   0.91   45      0.0  0.422222   45   66.0  79.60   45
+(0.0, 30.0]           -0.85  7.56   43  -4.84   6.65   43      0.0  0.488372   43   10.0  45.67   43
+(30.0, 80.0]           7.10  7.10    2  12.29  12.29    2      0.0       0.0    2   54.0  54.00    2
+
+=== E. Touch-bar shape ===
+median wick_beyond=2.7bp, close_rel=0.7bp; P(close beyond level at touch bar)=0.60
+P(wick>50bp)=0.01 → median post15 when big wick: -16bp vs small wick 2bp
+
+=== F. Cross-side: after UP touch, DOWN-side movement next 30m (signed close-to-close, bp) ===
+UP touches: raw 30m return median=-2.6bp mean=-3.1bp P(>0)=0.40
+DOWN touches: raw 30m return median=1.1bp mean=-12.7bp P(>0)=0.50
+
+=== G. Net edge over 30m after touch (MFE-MAE, bp) ===
+      median  mean  size
+side                    
+DOWN    -3.1  11.8    40
+UP      -0.8   0.6    50
+                       median  mean  size
+dist                                     
+(0.0, 100.0]             -2.3  -2.3    21
+(100.0, 200.0]           -7.0  -2.9     9
+(200.0, 400.0]           11.8   6.0    14
+(400.0, 800.0]          -14.6  -4.6     4
+(800.0, 1000000000.0]    18.5  18.5     2
+
+=== H. Futures metrics at touch minute (median) ===
+        oi_d15  taker_ls  ls_ratio
+side                              
+DOWN  116.0180    0.6897    2.0023
+UP    -58.0095    1.4786    2.1333
+AUC(taker_ls signed→continuation30)=0.420 n=90
+AUC(-oi_d15 signed→continuation30)=0.391  (OI rise vs sweep direction)
+
+=== I. Reversal-in-15m model: AUC=0.433 base=0.43 n=90 ===
+loc            0.492
+taker_ls      -0.490
+wick_beyond    0.418
+close_rel      0.268
+oi_d15        -0.074
+dist           0.043
+appr_toward    0.016
+
+=== J. Strongest sweeps (loc>=8.08, n=23) ===
+median post5/30/60=4/9/-2bp; reject15=0.35; tt_min median=23
+
+=== K. Controls (targets never touched in 240m, n=154) ===
+median |dist| at snapshot=-255bp-ish $=446
+
+=== L. Tape at touch (15m window ending at touch bar) ===
+      vol_surge  taker_share
+side                        
+DOWN      1.091        0.477
+UP        1.012        0.660
+AUC(taker_share signed → post30 through-level)=0.438 n=90
+AUC(vol_surge → |post30|>10bp)=0.671
+
+=== M. Bimodality by loc (median split at 3.88) ===
+      post15            post30            post60            rejected                tt_min            
+      median  mean size median  mean size median  mean size   median      mean size median   mean size
+loc                                                                                                   
+False   1.59  7.14   45  -2.60  5.17   45  -2.62  3.83   45      0.0  0.377778   45   39.0  61.49   45
+True    2.16  2.64   45  -1.15  2.63   45  -9.36  3.29   45      1.0  0.511111   45   17.0  64.16   45
+
+=== N. Collision (dead-zone sweep) aftermath ===
+collisions_2026-10-27_03-12.txt t=2026-10-27 10:12:18.092000+00:00 $77M sides=UP ret+30/60/120/180m = 36/56/41/93 bp
+collisions_2026-10-27_05-50.txt t=2026-10-27 12:50:52.434000+00:00 $45M sides=UP ret+30/60/120/180m = -21/-42/-13/33 bp
+collisions_2026-10-27_09-38.txt t=2026-10-27 16:38:23.463000+00:00 $180M sides=UP ret+30/60/120/180m = -1/3/-5/7 bp
+collisions_2026-10-27_14-19.txt t=2026-10-27 21:19:31.574000+00:00 $62M sides=UP ret+30/60/120/180m = 41/26/19/4 bp

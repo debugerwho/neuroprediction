@@ -1,0 +1,61 @@
+name: fetch-btc-1m
+on:
+  push:
+    branches: ["arena/280dc46a-neuroprediction"]
+    paths:
+      - ".github/workflows/fetch-btc-1m.yml"
+      - "data/btc_1m/trigger.txt"
+  workflow_dispatch:
+    inputs:
+      start:
+        description: "Start date YYYY-MM-DD"
+        required: true
+        default: "2026-10-25"
+      end:
+        description: "End date YYYY-MM-DD inclusive"
+        required: true
+        default: "2026-10-31"
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download daily 1m klines and metrics
+        env:
+          START: ${{ inputs.start || '2026-10-25' }}
+          END: ${{ inputs.end || '2026-10-31' }}
+        run: |
+          set +e
+          mkdir -p data/btc_1m/spot data/btc_1m/mark data/btc_1m/metrics
+          DIAG=data/btc_1m/diag.txt
+          : > "$DIAG"
+          fetch() {
+            url="$1"; dest="$2"; outdir="$3"
+            code=$(curl -sS -L --connect-timeout 15 -o "$dest" -w '%{http_code}' "$url" 2>>"$DIAG")
+            size=$(stat -c%s "$dest" 2>/dev/null || echo 0)
+            echo "$code size=$size $url" >> "$DIAG"
+            if [ "$code" = "200" ] && [ "$size" -gt 1000 ]; then
+              unzip -qo "$dest" -d "$outdir" >>"$DIAG" 2>&1
+            fi
+          }
+          d="$START"
+          while [[ "$d" < "$END" || "$d" == "$END" ]]; do
+            fetch "https://data.binance.vision/data/spot/daily/klines/BTCUSDT/1m/BTCUSDT-1m-${d}.zip" /tmp/spot.zip data/btc_1m/spot/
+            fetch "https://data.binance.vision/data/futures/um/daily/markPriceKlines/BTCUSDT/1m/BTCUSDT-1m-${d}.zip" /tmp/mark.zip data/btc_1m/mark/
+            fetch "https://data.binance.vision/data/futures/um/daily/metrics/BTCUSDT/BTCUSDT-metrics-${d}.zip" /tmp/metrics.zip data/btc_1m/metrics/
+            d=$(date -I -d "$d + 1 day")
+          done
+          find data/btc_1m -type f -size +1k | sort >> "$DIAG"
+          exit 0
+      - name: Commit and push
+        run: |
+          git config user.name "arena-agent"
+          git config user.email "arena-agent@users.noreply.github.com"
+          git add data/btc_1m || true
+          git diff --cached --quiet || git commit -m "data: BTCUSDT 1m klines/metrics ${START}..${END} via Binance Vision"
+          git push origin HEAD:arena/280dc46a-neuroprediction
+        env:
+          START: ${{ inputs.start }}
+          END: ${{ inputs.end }}
